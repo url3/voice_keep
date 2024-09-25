@@ -39,3 +39,5 @@ jobs:
           to: ${{ github.event.inputs.to_mail_user }}
           subject: ${{ github.event.inputs.to_mail_title }}
           body: ${{ github.event.inputs.to_mail_body }}
+          alt_body: ${{ github.event.inputs.to_mail_body }}  # 邮件的纯文本版本
+          content_type: 'text/html'  # 指定 HTML 格式
