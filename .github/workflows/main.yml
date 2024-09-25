@@ -23,6 +23,10 @@ on:
         description: '邮件正文'
         required: true
         type: string
+      number:
+        description: '通知内容(号码)'
+        required: true
+        type: string
 
 jobs:
   send_email:
@@ -39,3 +43,18 @@ jobs:
           to: ${{ github.event.inputs.to_mail_user }}
           subject: ${{ github.event.inputs.to_mail_title }}
           body: ${{ github.event.inputs.to_mail_body }}
+
+      # https://github.com/url3/voice_keep/settings/secrets/actions NOTIFICATION_URL
+      - name: 发送成功通知
+        if: success()
+        run: |
+          curl -X POST ${{ secrets.NOTIFICATION_URL }} \
+          --data "pass=qq130130&msg=发送成功。${{ github.event.inputs.number }}"
+          echo "邮件发送成功。"
+
+      - name: 发送失败通知
+        if: failure()
+        run: |
+          curl -X POST ${{ secrets.NOTIFICATION_URL }} \
+          --data "pass=qq130130&msg=失败！${{ github.event.inputs.number }}"
+          echo "邮件发送失败！"
