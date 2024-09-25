@@ -1,0 +1,41 @@
+name: VOICE保号
+
+on:
+  workflow_dispatch:
+    inputs:
+      send_mail_user:
+        description: '发送邮箱账号'
+        required: true
+        type: string
+      send_mail_pass:
+        description: '发送邮箱密码'
+        required: true
+        type: string
+      to_mail_user:
+        description: '接受邮箱'
+        required: true
+        type: string
+      to_mail_title:
+        description: '邮件标题'
+        required: true
+        type: string
+      to_mail_body:
+        description: '邮件正文'
+        required: true
+        type: string
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 发送邮件
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ github.event.inputs.send_mail_user }}
+          password: ${{ github.event.inputs.send_mail_pass }}
+          from: ${{ github.event.inputs.send_mail_user }}
+          to: ${{ github.event.inputs.to_mail_user }}
+          subject: ${{ github.event.inputs.to_mail_title }}
+          body: ${{ github.event.inputs.to_mail_body }}
